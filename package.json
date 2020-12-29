@@ -1,0 +1,26 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Denis Kasemirski",
+  "license": "OPEN SOURCE",
+  "dependencies": {
+    "add": "^2.0.6",
+    "cheerio": "^1.0.0-rc.5",
+    "electron-context-menu": "^2.3.1",
+    "googleapis": "^66.0.0",
+    "lodash": "^4.17.20",
+    "or": "^0.2.0",
+    "request": "^2.88.2",
+    "tress": "^1.1.4",
+    "yarn": "^1.22.10"
+  },
+  "devDependencies": {
+    "electron": "^11.1.1",
+    "electron-packager": "^15.2.0"
+  }
+}

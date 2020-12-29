@@ -1,0 +1,70 @@
+.excel-expander {
+    margin: 20px 0;
+}
+
+.header-inner {
+    position: relative;
+}
+
+.form-auth {
+    position: absolute;
+    right: 15px;
+    top: 50px;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #b6b6b6;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.auth-status {
+    display: flex;
+    align-items: center;
+}
+
+.auth-true-mes {
+    font-size: 16px;
+    color: white;
+    margin-right: 20px;
+}
+
+.auth-false-mes {
+    font-size: 10px;
+    color: red;
+}
+
+.card-edit-cancel {
+    background-color: rgb(255 140 140 / 13%);
+}
+
+.card-edit-completed {
+    background-color: rgb(0 255 58 / 33%);
+}
+
+.span-edit-completed {
+    color: rgb(0 232 7);
+    font-size: 20px;
+}
+
+.span-edit-cancel {
+    color: rgb(255, 72, 72);
+    font-size: 20px;
+    
+}
+
+.select-actions-div {
+    margin-bottom: 20px;
+}
+
+.bad-link {
+    color: rgb(255, 72, 72);
+    font-size: 16px;
+}
+
+.input-link-bad {
+    background-color: rgb(255 140 140 / 13%);;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container header-inner">
+        <p class="navbar-brand" href="#">Excel помощник</p>
+        <div class="auth-status">
+          <h5 class="auth-true-mes d-none">Вы авторизованы!</h5>
+          <button class="btn btn-danger btn-log-out d-none" onclick="logOut()">Выйти</button>
+          <button class="btn btn-outline-light my-2 my-lg-0 log" onclick="viewAuth()">Авторизация</button>
+        </div>
+
+        <div class="form-auth d-none">
+
+            <h5 class="auth-false-mes d-none">Что-то пошло не так...</h5>
+            <div class="form-group block-link-auth">
+                <label for="inputAuthLink">Вставьте ссылку:</label>
+                <input readonly type="text" class="form-control input-auth" id="inputAuthLink" placeholder="Ссылка для авторизации">
+            </div>
+            <div class="form-group link-auth">
+                <a onclick="aut()">Получить ссылку</a>
+            </div>
+            <button type="submit" class="btn btn-dark btn-log-in" onclick="logIn()">Войти</button>
+            <button class="btn btn-dark auth-cancle" onclick="viewAuth()">Закрыть</button>
+
+          </div>
+
+    </nav>
+</header>
+<main class="main">
+    <div class="container">
+                
+        <div class="excel-expander">
+
+            <div class="excel-client-link">
+                <div class="alert alert-warning alert-not-auth"><strong>Вы не авторизованы!</strong> Авторизуйтесь для продолжения работы с таблицами.</div>
+                <div class="card d-none">
+                    <div class="card-header">
+                      <h5 class="table-name">Редактирование таблицы 
+                        <span class="span-edit-completed d-none">прошло успешно!</span>
+                        <span class="span-edit-cancel d-none">отменено!</span>
+                      </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <label for="linkTable">Ссылка на таблицу: <span class="bad-link d-none">Что-то не так с вашей ссылкой!</span></label>
+                        <input type="text" class="form-control" id="linkTable" placeholder="Вставьте ссылка на редактируемую таблицу">
+                        
+                        <div class="select-actions-div">
+                          <label class="my-1 mr-2" for="select-actions">Список действий:</label>
+                          <select value="0" class="custom-select my-1 mr-sm-2" id="select-actions" onchange="changeActionOnTable()">
+                            <option value="0" selected>Выбрать действие</option>
+                            <option value="1">Заполнение артикулей и названий</option>
+                            <option value="2">Заполнение листа "Ряды"</option>
+                            <option value="3">Добавление штрихкодов коробок</option>
+                            <option value="4">Заполние листа "Оплата"</option>
+                          </select>
+                        </div>
+
+                        <div class="action-div action-1 d-none">
+                          <p class="lead">
+                            На листе "ЗАКАЗ" будут заполнены столбцы "Артикул" и "Название", на основе ссылок указанных в столбце "Ссылка". Если какие-то ячейки в столбцах "Артикул" и "Названия" будут уже заполнены, программа не перезапишет данные. Но при нажатой галочке программа будет перезаписывать данные в уже заполненных ячейках.
+                          </p>
+                          <div class="form-group row">
+                            <div class="col-sm-12">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="re-write-checked">
+                                <label class="form-check-label" for="re-write-checked">
+                                  - перезаписать все заполненные значения товаров и расчетов
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <div class="col-sm-10">
+                              <button class="btn btn-dark btn-edit-table" onclick="getLinks()">Заполнить таблицу</button>
+                              <button class="btn btn-dark btn-cancel-edit-table d-none" onclick="setEditOff()">Отменить</button>
+                            </div>
+                          </div>
+
+                          <div class="progress d-none">
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+
+                        <div class="action-div action-2 d-none">
+                          <p class="lead">
+                            Заполнение листа "Ряды", на основе данных заполненных в листе "ЗАКАЗ".
+                          </p>
+                          <button class="btn btn-dark btn-write-table-rows" onclick="">Заполнить таблицу</button>
+                        </div>
+
+                        <div class="action-div action-3 d-none">
+                          <!-- <p class="lead">
+                            Выберите файлы с коробками.
+                          </p> -->
+                          <div class="selector-number-box form-group row">
+                            <div class="col-sm-12">
+                                <h5 class="card-title">Выберите накладные с номерами коробок:</h5>
+                                <input type="file" class="form-control-file" id="selected-file-with-box" multiple="multiple" placeholder="qwe">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="action-div action-4 d-none">
+                          <p class="lead">
+                            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.
+                          </p>
+                          <button class="btn btn-dark btn-write-table-payment" onclick="">Заполнить таблицу</button>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button class="btn btn-dark btn-write-table-payment" onclick="test()">test</button>
+  </main>
+
+  <script src="./script.js"></script>
+  <script src="./link.js"></script>
+</body>
+</html>
