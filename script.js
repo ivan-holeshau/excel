@@ -68,7 +68,6 @@ function addClass(el, addClass) {
 
 async function checkAuth() {
     let auth = await checkConnect()
-    console.log(auth)
   if (auth) {
       addClass(viewsAuthBtn, 'd-none')
       addClass(alertNotAuth, 'd-none')
@@ -130,7 +129,6 @@ function activeInput() {
 }
 
 function hideAndShow(hidenArr = [], showArr = []) {
-  console.log(hidenArr, showArr)
   if (hidenArr.length !== 0) {
     hidenArr.forEach(el => {
       if(!el.classList.contains("d-none")) {
@@ -150,7 +148,6 @@ function changeActionOnTable() {
   const selectedAction = selectActions.selectedIndex
   const hidenArr = []
   const showArr = []
-  console.log(actionDiv)
   if (selectedAction === "0") {
     actionDiv.forEach((item) => {
       hidenArr.push(item)
@@ -171,7 +168,6 @@ function changeActionOnTable() {
 let gen = createToken()
 
 function addFolder(event){
-    console.log(document.getElementById('nameFolder').value, createFolder)
  try {
      const fileName = document.getElementById('nameFolder').value;
     
@@ -179,17 +175,16 @@ function addFolder(event){
     createFolder('exlRootState')
  }
  catch{
-     console.log(Error)
+
  }
 }
 
 function aut(){
     gen = createToken()
-    console.log(gen)
     
    const link = gen.next()
    shell.openExternal(link.value)
-   console.log('link',link)
+
    activeInput()
    
 }
@@ -206,16 +201,16 @@ async function newExcel(){
     if(a) {
         createExcel()
     } else {
-        console.log(a)
+
     }
 }
 
 async function getLinks() {
   addClass(alertBadLinkTable, 'd-none')
   const arrsLinks = await getTableRows(linkTable.value, "C2:E3000")
-  console.log(arrsLinks === null)
+
   if (!(arrsLinks === null)){
-    console.log(arrsLinks)
+
     activeEditTable()
     const reWrite = reWriteChecked.checked
     let dataParse = {}
@@ -268,8 +263,6 @@ async function getLinks() {
                   arrsLinkArtName.push([arrsLinks[i][0], arrsLinks[i][1], arrsLinks[i][2]])
                 }
               }
-  
-              console.log('Битая ссылка', arrsLinks[i][0])
             }
   
           } else {
@@ -418,7 +411,3 @@ function cancelEditTable() {
 //         formAuth.classList.add('d-none')
 //     }
 // }
-
-async function test() {
-  console.log(await getTableRows(linkTable.value, "C2:C3000"))
-}
