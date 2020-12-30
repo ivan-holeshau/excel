@@ -106,9 +106,15 @@
                           </p> -->
                           <div class="selector-number-box form-group row">
                             <div class="col-sm-12">
-                                <h5 class="card-title">Выберите накладные с номерами коробок:</h5>
-                                <input type="file" class="form-control-file" id="selected-file-with-box" multiple="multiple" placeholder="qwe">
+                                <h5 class="card-title">Выберите накладные с номерами коробок: </h5>
+                                <h6 class="bad-files-box d-none">Выберите корректные файлы с коробками</h6>
+                                <button type="button" class="btn btn-outline-dark" onclick="openModal()">Выбрать файлы коробок</button>
+                                <span class="count-files-box">Выбрано файлов: 0</span>
                             </div>
+                            <div class="col-sm-12">
+                              <button type="button" class="btn btn-dark btn-add-num-box-in-table" onclick="setNumberBoxInTable()">Заполнить таблицу</button>
+                            </div>
+                            
                           </div>
                         </div>
 
@@ -123,7 +129,19 @@
 
         </div>
     </div>
+
+    <div id="modal" style="display:none; align-items: center;">
+      <div class="button-add">
+        <input id="file" type="file"  style="display: none;">
+        <button  class="btn btn-dark" onclick="addFile()">Добавить Файл</button>  
+        <p class="close" onclick=closeModal()>Закрыть</p>
+      </div>
+      <div id = 'list' class="list"></div>
+    </div>
+    <div id="modal2" style="display:none"></div>
+
     <button class="btn btn-dark btn-write-table-payment" onclick="test()">test</button>
+
   </main>
 
   <script src="./script.js"></script>

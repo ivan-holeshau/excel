@@ -7,6 +7,8 @@ const delToken = require(__dirname+'/index').delToken
 const getTableRows = require(__dirname+'/index').getTableRows
 const parseURL = require(__dirname + '/parser').parseURL
 const updateTable = require(__dirname + '/index').updateTable
+const cv2json = require("convert-excel-to-json");
+const lodash = require("lodash");
 
 const checkNumBox = document.querySelector("#addNumberBox"); //
 const selectorNumBox = document.querySelector(".selector-number-box"); //
@@ -31,7 +33,11 @@ const spanEditCancel = document.querySelector('.span-edit-cancel')
 const selectActions = document.querySelector('#select-actions')
 const actionDiv = document.querySelectorAll('.action-div')
 const alertBadLinkTable = document.querySelector('.bad-link')
+const addNumBoxInTable = document.querySelector('.btn-add-num-box-in-table')
+const alertBadFilesBox = document.querySelector('.bad-files-box')
+const countFilesBoxSelected = document.querySelector('.count-files-box')
 
+let lastId = 0
 let canEditTable = false
 
 if (card) {
@@ -379,7 +385,6 @@ function activeEditTable() {
   canEditTable = true
 
   btnEditTable.setAttribute('disabled', 'disabled')
-  selectedFileWithBox.setAttribute('disabled', 'disabled')
   reWriteChecked.setAttribute('disabled', 'disabled')
   linkTable.setAttribute('disabled', 'disabled')
   progressDiv.classList.remove('d-none')
@@ -393,7 +398,6 @@ function setEditOff() {
 
 function cancelEditTable() {
 
-  selectedFileWithBox.removeAttribute('disabled')
   reWriteChecked.removeAttribute('disabled')
   linkTable.removeAttribute('disabled')
   addClass(progressDiv, 'd-none')
@@ -404,10 +408,152 @@ function cancelEditTable() {
   progressBar.setAttribute('aria-valuenow', 0)
 }
 
-// function viewAuth() {
-//     if (formAuth.classList.contains('d-none')) {
-//         formAuth.classList.remove('d-none')
-//     } else {
-//         formAuth.classList.add('d-none')
-//     }
-// }
+const liftFiles = new Map();
+
+function crateFilesView(name, id) {
+  return `<div class="list__selected-file" id=div${id}>
+  ${name} <svg  id=${id} onclick=deleteFile(${id}) xmlns="http://www.w3.org/2000/svg" class="delete" viewBox="0 0 56 64"><defs><style>.cls-1{fill:#ff8989;}.cls-2{fill:#ff5d5d;}</style></defs><title>Trash Can</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M42.48,64h-29a6,6,0,0,1-6-5.5L4,16H52L48.46,58.5A6,6,0,0,1,42.48,64Z"/><path class="cls-2" d="M52,8H38V6a6,6,0,0,0-6-6H24a6,6,0,0,0-6,6V8H4a4,4,0,0,0-4,4v4H56V12A4,4,0,0,0,52,8ZM22,6a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2V8H22Z"/><path class="cls-2" d="M28,58a2,2,0,0,1-2-2V24a2,2,0,0,1,4,0V56A2,2,0,0,1,28,58Z"/><path class="cls-2" d="M38,58h-.13A2,2,0,0,1,36,55.88l2-32a2,2,0,1,1,4,.25l-2,32A2,2,0,0,1,38,58Z"/><path class="cls-2" d="M18,58a2,2,0,0,1-2-1.87l-2-32a2,2,0,0,1,4-.25l2,32A2,2,0,0,1,18.13,58Z"/></g></g></svg>
+</div>`;
+}
+
+function deleteFile(id) {
+  liftFiles.delete(id)
+  var item = document.getElementById("div"+id);
+  item.parentNode.remove();
+}
+
+function closeModal() {
+  const modal2 = document.getElementById("modal2");
+  const modal = document.getElementById("modal");
+  modal.style = "display:none";
+  modal2.style = "display:none";
+  countFilesBoxSelected.innerHTML = `Выбрано файлов: ${liftFiles.size}`
+}
+
+async function addFile() {
+  var input = document.createElement("input");
+  input.type = "file";
+  input.onchange = (e) => {
+    var file = e.target.files[0];
+    let div = document.createElement("DIV");
+    let fileName =
+      file.name.length > 25
+        ? String(file.name).slice(0, 25) + "..."
+        : file.name;
+    div.innerHTML = crateFilesView(fileName, ++lastId);
+    list.append(div);
+    liftFiles.set(lastId, file.name);
+  };
+  input.click();
+}
+function openModal() {
+  const modal2 = document.getElementById("modal2");
+  modal2.className = "modal_shadow";
+  const modal = document.getElementById("modal");
+  modal.className = "modal";
+  modal.style = "display:block";
+  modal2.style = "display:block";
+}
+
+async function parceDocumentExcel() {
+  console.log(cv2json);
+  const result = await cv2json({
+    sourceFile: "одинаковые коробки.xls",
+  });
+
+  const list = await getExlObject(result);
+  const list2 = await getExlObject(result);
+  let a = getBox(3401964, list);
+  concat([list, list2]); // готовый список из всех файлов дальше в getBox(3401964, list) вторым параметром передаешь его
+}
+
+function concat(lists) {
+  let list = new Map();
+  const obj = lists.map((item) => {
+    const keys = item.keys();
+    Array.from(keys).forEach((key) => {
+      if (!list.has(key)) list.set(key, item.get(key));
+      else {
+        list.get(key).push(...item.get(key));
+        let get = lodash.unionBy(list.get(key), "art");
+        list.set(key, get);
+      }
+    });
+    return list;
+  });
+  return list;
+}
+
+function getBox(art, list) {
+  const keys = list.keys();
+  const result = Array.from(keys).map((box) => {
+    const value = list.get(box);
+
+    const res = value.map((item) => {
+      item.box = box;
+      item.check = item.art == art;
+      if (item.art == art) return item;
+      return [];
+    });
+    const filtert = res.filter((item) => item.check);
+
+    return filtert;
+  });
+  const filtert = result.filter((item) => item.length);
+
+  return filtert.map((item) => {
+    const a = { ...item };
+    return a["0"];
+  });
+}
+
+async function getExlObject(data) {
+  const mass = [];
+  const list = new Map();
+  let number = 0;
+  let checknumber = "";
+  const r = /\d+/g;
+
+  let m;
+  const datas = await data;
+  const arr = datas.TDSheet;
+  for (let i = 0; i < arr.length; i++) {
+    let checkBox = arr[i].B && arr[i].B.indexOf("Коробка №") === 0;
+    if (checkBox) {
+      checknumber = "";
+      while ((m = r.exec(arr[i].B)) != null) {
+        checknumber += m[0];
+      }
+      number = Number(checknumber.length && checknumber.slice(1));
+      list.set(number, []);
+    }
+
+    if (Number(arr[i].A)) {
+      let obj = {
+        index: arr[i].A,
+        art: arr[i].B,
+        name: arr[i].G,
+        count: arr[i].K,
+        type: arr[i].L,
+      };
+
+      list.get(number).push(obj);
+    }
+  }
+  return list;
+}
+
+async function setNumberBoxInTable() {
+  console.log(liftFiles.size)
+  if (liftFiles.size === 0) {
+    console.log(liftFiles.size, 'if')
+    addNumBoxInTable.setAttribute('disabled', 'disabled')
+    alertBadFilesBox.classList.remove('d-none')
+    setTimeout(() => {
+      addNumBoxInTable.removeAttribute('disabled')
+      addClass(alertBadFilesBox, 'd-none')
+    }, 2000)
+  } else {
+    
+  }
+}

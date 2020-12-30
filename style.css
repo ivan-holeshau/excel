@@ -68,3 +68,75 @@
 .input-link-bad {
     background-color: rgb(255 140 140 / 13%);;
 }
+
+.modal_shadow {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color:#bdbdbd9e;
+    z-index: 1000;
+}
+
+.modal {
+    display: flex;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 20px 0px;
+    position: absolute;
+    margin: auto;
+    height: 300px;
+    width: 450px;
+    background-color: white;
+    z-index: 1001;
+    flex-direction: column;
+}
+
+.button-add {
+    padding: 10px 20px;
+}
+
+.close {
+    color: #000000;
+    font-size: 14px;
+}
+.list {
+    border: 1px solid #f3f3f3;
+    border-radius: 3px;
+    margin: 20px;
+    overflow: auto;
+    height: 220px;
+    margin-top: 0;
+}
+
+.list__selected-file {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 30px;
+    border: 1px solid #f3f3f3;
+    align-items: center;
+    border-radius: 3px;
+    padding: 10px;
+    box-shadow: rgb(220 220 220 / 30%) 0px 0px 10px 1px;
+    height: 40px;
+}
+
+.delete {
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn-add-num-box-in-table {
+    margin-top: 20px;
+}
+
+.bad-files-box {
+    color: rgb(255, 72, 72);
+    font-size: 16px;
+}
+
+.count-files-box {
+    font-size: 16px;
+}
