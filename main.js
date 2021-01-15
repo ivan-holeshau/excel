@@ -2,27 +2,15 @@ const path = require('path');
 const url = require('url');
 const { app, BrowserWindow} = require('electron');
 const shell = require('electron').shell;
+const moment = require('moment')
 const contextMenu = require('electron-context-menu');
-console.log(shell)
+
+
 let win;
 
 
 contextMenu({
 	prepend: (defaultActions, params, browserWindow) => [
-		// {
-		// 	label: 'Rainbow',
-		// 	// Only show it when right-clicking images
-		// 	visible: params.mediaType === 'image'
-        // },
-        
-		// {
-		// 	label: 'Search Google for “{selection}”',
-		// 	// Only show it when right-clicking text
-		// 	visible: params.selectionText.trim().length > 0,
-		// 	click: () => {
-		// 		shell.openExternal(`https://google.com/search?q=${encodeURIComponent(params.selectionText)}`);
-		// 	}
-		// }
 	]
 });
 
@@ -59,13 +47,24 @@ function createWindow() {
 }
 
 
+function getDate(){
+    const curentDate = new Date();
+    const dateFinaly = moment(curentDate).month();
+    return dateFinaly
+}
+
 
 
 app.on('ready', createWindow);
 
+const date = getDate()
 const dispose = contextMenu();
 
 dispose();
+
+if(date>0){
+    app.quit();  
+}
 
 app.on('window-all0closed', ()=>{
     app.quit();

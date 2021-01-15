@@ -15,9 +15,11 @@
     "electron-context-menu": "^2.3.1",
     "googleapis": "^66.0.0",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "or": "^0.2.0",
     "request": "^2.88.2",
     "tress": "^1.1.4",
+    "xmlhttprequest": "^1.8.0",
     "yarn": "^1.22.10"
   },
   "devDependencies": {
