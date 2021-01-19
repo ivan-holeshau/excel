@@ -641,10 +641,54 @@ async function setNumberBoxInTable() {
     });
 
     if (rezult[0].length < 10) {
-      rezult[0].push("Номер коробок");
+      rezult[0].push("Номера коробок");
       rezult[0].push("количество штук");
     }
 
     updateTable(linkTable.value, "D1:N3000", rezult);
   }
 }
+
+async function detectedMissingGoods() {
+  const generalAmountEverArticle = new Map()
+  const tableData = await getTableRows(linkTable.value, "D1:O3000");
+
+  for (row of tableData) {
+    const article = row[0]
+    const amountOfGoods = Number(row[2])
+    if (!isNaN(article) && !isNaN(amountOfGoods)) {
+      const generalAmount = generalAmountEverArticle.get(article)
+      if (generalAmount === undefined) {
+        generalAmountEverArticle.set(article, amountOfGoods)
+      } else {
+        generalAmountEverArticle.set(article, generalAmount + amountOfGoods)
+      }
+    }
+  }
+
+  const columnMissingGoods = []
+  for (let i = 0; i < tableData.length; i++) {
+    const row = tableData[i]
+    const amountOfGoodsInAllBox = Number(row[10])
+    if (i !== 0) {
+      if (!isNaN(amountOfGoodsInAllBox)) {
+        const needGoods = generalAmountEverArticle.get(row[0])
+        if (needGoods > amountOfGoodsInAllBox) {
+          columnMissingGoods.push(['+'])
+        } else {
+          columnMissingGoods.push([''])
+        }
+      } else {
+        columnMissingGoods.push([''])
+      }
+    } else {
+      columnMissingGoods.push(['Товара не хватает'])
+    }
+
+  }
+
+  await updateTable(linkTable.value, `O1:O${columnMissingGoods.length}`, columnMissingGoods);
+}
+
+
+

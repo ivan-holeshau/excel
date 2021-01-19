@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <title>Excel помощник</title>
 </head>
 <body>
 
@@ -53,7 +53,7 @@
                     <div class="card-body">
 
                         <label for="linkTable">Ссылка на таблицу: <span class="bad-link d-none">Что-то не так с вашей ссылкой!</span></label>
-                        <input type="text" class="form-control" id="linkTable" placeholder="Вставьте ссылка на редактируемую таблицу" value="https://docs.google.com/spreadsheets/d/1CCCvMuo3EHPDHuMOu79DqAiIKOTIeC8XwyHMYIOmGd0/edit#gid=0">
+                        <input type="text" class="form-control" id="linkTable" placeholder="Вставьте ссылка на редактируемую таблицу">
                         
                         <div class="select-actions-div">
                           <label class="my-1 mr-2" for="select-actions">Список действий:</label>
@@ -95,7 +95,7 @@
 
                         <div class="action-div action-2 d-none">
                           <p class="lead">
-                            Заполнение листа "Ряды", на основе данных заполненных в листе "ЗАКАЗ".
+                            Заполнение листа "Ряды", на основе данных заполненных в листе "ЗАКАЗ". <span style="color: red;">Данная функция еще в разработке...</span>
                           </p>
                           <button class="btn btn-dark btn-write-table-rows" onclick="">Заполнить таблицу</button>
                         </div>
@@ -113,6 +113,7 @@
                             </div>
                             <div class="col-sm-12">
                               <button type="button" class="btn btn-dark btn-add-num-box-in-table" onclick="setNumberBoxInTable()">Заполнить таблицу</button>
+                              <button type="button" class="btn btn-dark btn-search-missing-goods" onclick="detectedMissingGoods()">Вычислить недостающий товар</button>
                             </div>
                             
                           </div>
@@ -120,7 +121,7 @@
 
                         <div class="action-div action-4 d-none">
                           <p class="lead">
-                            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.
+                            <span style="color: red;">Данная функция еще в разработке...</span>
                           </p>
                           <button class="btn btn-dark btn-write-table-payment" onclick="">Заполнить таблицу</button>
                         </div>
@@ -139,8 +140,6 @@
       <div id = 'list' class="list"></div>
     </div>
     <div id="modal2" style="display:none"></div>
-
-    <button class="btn btn-dark btn-write-table-payment" onclick="test()">test</button>
 
   </main>
 
